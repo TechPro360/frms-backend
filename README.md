@@ -1,59 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FMS-FRMS-IBM (Integrated Budget Module)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
+The **Financial Management Services - Financial Resource Management System - Integrated Budget Module (IBMS)** is a comprehensive institutional budget management system designed for **Central Luzon State University (CLSU)**. It automates the tracking, approval, and management of budget obligations (OBR/BUR), fund allocations, and real-time financial monitoring.
 
-## About Laravel
+## 🚀 Quick Start
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Backend Setup (Laravel)
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+# Configure your DB (SQLite by default)
+php artisan migrate:fresh --seed
+php artisan serve
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 2. Frontend Setup (React + Vite)
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🌐 Accessing the App
+Once both servers are running:
+- **Frontend URL**: [http://localhost:5173](http://localhost:5173)
+- **API Base URL**: `http://localhost:8000/api`
 
-## Learning Laravel
+## 👤 Demo Accounts (Seed Data)
+The system is pre-loaded with demo accounts for evaluation.
+**Default Password for all demo users**: `CLSU-FRMS-2026!`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+| Role | Username | Office |
+|------|----------|--------|
+| FMS Director | `director` | FMS |
+| IT Admin | `it_admin` | IT |
+| MISO Requestor | `miso_requestor` | MISO |
+| Budget Head | `budget_head` | Budget |
+| Cashier | `cashier` | Cashier |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## 🔐 Role-Based Access Control (RBAC)
+The system features a strict role-based access matrix:
+- **Director**: Full overview and override capacity.
+- **Budget Head**: High-level budget oversight and review.
+- **Budget Clerk**: Data entry and OBR/BUR processing.
+- **Cashier**: Income collections and OR oversight.
+- **Requesting Office (MISO, CoEd, etc.)**: Isolated view of their own department's requests only.
+- **IT Admin**: User management, role assignment, and fund access control.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🏛️ Institutional Branding
+All official CLSU branding assets (Seal, Logos, Watermarks) are located in `frontend/public/assets/branding`. Fidelity to these assets is mandatory as per institutional standards.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# 🤖 AGENT_README - FMS-FRMS-IBM
 
-## Contributing
+## 🎯 Context for AI Agents
+You are working on the **FMS-FRMS-IBM** project. This is a robust management system for university finances.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🏗️ Architecture Patterns
+- **Backend**: Laravel 11. Custom math logic for **Box B** (point-of-deduction) is located in `app/Models/ObligationRequest.php`.
+- **Frontend**: React + TypeScript. Role-based gating is centralized in `src/utils/rbac.ts` and enforced via `<RoleGuard>` in `App.tsx`.
+- **Math Logic**: Budget math must NEVER be done on the client side only; verify all totals against the database balances (`PpmpBalance` model).
 
-## Code of Conduct
+### 🛠️ Key Directories
+- `frontend/src/features/`: Component-based features (obligations, audit, admin, etc.)
+- `backend/app/Models/`: Core entity logic and relationships.
+- `backend/database/seeders/`: Demo accounts and pilot fund clusters (Fund 163).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 📐 Coding Standards
+1. **Styling**: Use Vanilla CSS for custom components. Institutional green (`#005230`) and gold (`#F8B41D`) are the primary brand anchors.
+2. **Icons**: Use `lucide-react`.
+3. **RBAC**: When adding new pages, register them in `rbac.ts` and set appropriate permissions in the `ACCESS_MATRIX`.
+4. **State**: Zustand is used for authentication (`authSlice.ts`).
 
-## Security Vulnerabilities
+### 🧪 Verification
+- Run `npx tsc --noEmit` locally in `frontend` before pushing UI changes.
+- Ensure `php artisan migrate:fresh --seed` works without errors for fresh environment setup.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+*Priority: Zero-tolerance for institutional logo distortion.*
