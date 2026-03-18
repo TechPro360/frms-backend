@@ -1,7 +1,9 @@
-# FMS-FRMS-IBM (Integrated Budget Module)
-
-## Overview
-The **Financial Management Services - Financial Resource Management System - Integrated Budget Module (IBMS)** is a comprehensive institutional budget management system designed for **Central Luzon State University (CLSU)**. It automates the tracking, approval, and management of budget obligations (OBR/BUR), fund allocations, and real-time financial monitoring.
+## 📋 Prerequisites
+Before you begin, ensure you have the following installed:
+- **PHP 8.2+** (with `intl`, `sqlite3`, `mbstring` extensions)
+- **Composer** (PHP Package Manager)
+- **Node.js 18+** & **npm**
+- **Git**
 
 ## 🚀 Quick Start
 
@@ -11,8 +13,15 @@ cd backend
 composer install
 cp .env.example .env
 php artisan key:generate
-# Configure your DB (SQLite by default)
+
+# IMPORTANT: Ensure storage folders exist (if not present)
+# mkdir -p storage/framework/{sessions,views,cache/data} storage/logs
+
+# Initialize SQLite Database
+touch database/database.sqlite
 php artisan migrate:fresh --seed
+
+# Start the API
 php artisan serve
 ```
 
@@ -40,6 +49,10 @@ The system is pre-loaded with demo accounts for evaluation.
 | Budget Head | `budget_head` | Budget |
 | Cashier | `cashier` | Cashier |
 
+## 🛠️ Troubleshooting
+- **500 Error / Cache Path**: If you see a "valid cache path" error, ensure `backend/storage/framework/cache/data` exists and is writable.
+- **Port Conflicts**: If port 8000 is occupied, use `php artisan serve --port=8001`. Ensure `frontend/src/services/api/axios.ts` matches the new port.
+- **Vite 404**: If the login page returns 404 on refresh, ensure your browser is navigating to the root `/` first.
 
 ## 🔐 Role-Based Access Control (RBAC)
 The system features a strict role-based access matrix:
@@ -52,6 +65,9 @@ The system features a strict role-based access matrix:
 
 ## 🏛️ Institutional Branding
 All official CLSU branding assets (Seal, Logos, Watermarks) are located in `frontend/public/assets/branding`. Fidelity to these assets is mandatory as per institutional standards.
+
+---
+*Developed for CLSU Financial Management Services.*
 
 ---
 
